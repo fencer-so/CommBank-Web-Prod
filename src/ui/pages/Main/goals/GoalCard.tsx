@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useAppDispatch, useAppSelector } from '../../../../hooks'
 import { selectGoalsMap } from '../../../../store/goalsSlice'
+import { useAppDispatch, useAppSelector } from '../../../../store/hooks'
 import { setContent, setIsOpen, setType } from '../../../../store/modalSlice'
 import { Card } from '../../../components/Card'
 

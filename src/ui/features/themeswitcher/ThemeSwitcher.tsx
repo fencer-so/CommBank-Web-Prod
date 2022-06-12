@@ -1,7 +1,7 @@
 import { faMoon, faSun } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
-import { useAppDispatch, useAppSelector } from '../../../hooks'
+import { useAppDispatch, useAppSelector } from '../../../store/hooks'
 import { selectMode, setDarkMode, setLightMode } from '../../../store/themeSlice'
 
 export default function ThemeSwitcher() {
