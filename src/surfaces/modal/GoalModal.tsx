@@ -1,14 +1,22 @@
+import DateFnsUtils from '@date-io/date-fns';
 import { faCalendarAlt } from "@fortawesome/free-regular-svg-icons";
 import { faDollarSign, faSmile, IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+    KeyboardDatePicker, MuiPickersUtilsProvider
+} from '@material-ui/pickers';
+import 'date-fns';
 import { BaseEmoji } from "emoji-mart";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import styled from "styled-components";
 import { updateGoal as updateGoalApi } from "../../api/lib";
 import { updateGoal as updateGoalRedux } from "../../app/goalsSlice";
 import { useAppDispatch } from "../../app/hooks";
 import { Goal } from "../../types";
 import EmojiPicker from "./EmojiPicker";
+
+
+
 
 export type GoalModalProps = { goal: Goal }
 export function GoalModal(props: GoalModalProps) {
@@ -17,9 +25,17 @@ export function GoalModal(props: GoalModalProps) {
 
     const [isOpen, setIsOpen] = useState(false)
     const [icon, setIcon] = useState<string | null>(null)
+    const [name, setName] = useState<string | null>(null)
+    const [targetDate, setTargetDate] = useState<Date | null>(null)
+    const [targetAmount, setTargetAmount] = useState<number | null>(null)
+    const [startDate, setStartDate] = useState<Date | null>(new Date("2025-01-01"));
 
     useEffect(() => {
         setIcon(props.goal.iconName)
+        setName(props.goal.name)
+        setTargetDate(props.goal.targetDate)
+        setTargetAmount(props.goal.targetAmount)
+
     }, [props.goal.id])
 
     return (
@@ -66,13 +82,26 @@ export function GoalModal(props: GoalModalProps) {
                 } />
             </EmojiPickerContainer>
 
+
+
             <Name>{props.goal.name}</Name>
             <Item>
                 <Field name="Target Date" icon={faCalendarAlt} />
                 <Value>
-                    <StringValue>
-                        {new Date(props.goal.targetDate).toLocaleDateString()}
-                    </StringValue>
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <KeyboardDatePicker
+                            disableToolbar
+                            className='date-picker'
+                            format="MM/dd/yyyy"
+                            margin="dense"
+                            id="date-picker-inline"
+                            value={startDate}
+                            onChange={setStartDate}
+                            style={{ width: 160 }}
+                            InputProps={{ disableUnderline: true, style: { fontSize: "2rem", fontWeight: "bold" } }}
+
+                        />
+                    </MuiPickersUtilsProvider>
                 </Value>
             </Item>
 

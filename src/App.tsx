@@ -1,3 +1,4 @@
+import { createTheme, ThemeProvider as ThemeProviderMui } from '@material-ui/core';
 import React from 'react';
 import styled, { ThemeProvider } from "styled-components";
 import './App.scss';
@@ -13,6 +14,7 @@ import { Modal, ModalProps } from './surfaces/modal/Modal';
 import { Goal } from './types';
 
 
+
 function App() {
   const mode = useAppSelector(selectMode);
   const modalIsOpen = useAppSelector(selectIsOpen);
@@ -21,32 +23,39 @@ function App() {
 
   const dispatch = useAppDispatch()
 
+  const muiTheme = createTheme({
+    palette: {
+      type: mode,
+    },
+  });
+
   return (
     <AppContainer onClick={(e) => {
       e.stopPropagation()
       dispatch(setIsOpen(false))
     }} >
 
-      <ThemeProvider theme={mode === 'light' ? LightTheme : DarkTheme}>
-        <GlobalStyle />
+      <ThemeProviderMui theme={muiTheme}>
 
+        <ThemeProvider theme={mode === 'light' ? LightTheme : DarkTheme}>
+          <GlobalStyle />
 
+          <Main />
 
-        <Main />
+          <ModalContainer isOpen={modalIsOpen}>
+            <Modal isOpen={modalIsOpen} onClick={(e) => {
+              e.stopPropagation()
+            }}>
 
-        <ModalContainer isOpen={modalIsOpen}>
-          <Modal isOpen={modalIsOpen} onClick={(e) => {
-            e.stopPropagation()
-          }}>
+              {modalType === "Goal" ? (
+                <GoalModal goal={modalContent as Goal} />
+              ) : (null)}
 
-            {modalType === "Goal" ? (
-              <GoalModal goal={modalContent as Goal} />
-            ) : (null)}
+            </Modal>
+          </ModalContainer>
 
-          </Modal>
-        </ModalContainer>
-
-      </ThemeProvider>
+        </ThemeProvider>
+      </ThemeProviderMui>
     </AppContainer>
 
   );
@@ -70,4 +79,3 @@ const ModalContainer = styled.div<ModalProps>`
   top: 0;
   left: 0;
 `
-
