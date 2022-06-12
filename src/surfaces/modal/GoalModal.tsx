@@ -11,8 +11,8 @@ import { BaseEmoji } from "emoji-mart";
 import React, { useEffect, useState } from 'react';
 import styled from "styled-components";
 import { updateGoal as updateGoalApi } from "../../api/lib";
-import { updateGoal as updateGoalRedux } from "../../app/goalsSlice";
-import { useAppDispatch } from "../../app/hooks";
+import { selectGoalsMap, updateGoal as updateGoalRedux } from "../../app/goalsSlice";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { Theme } from '../../components/Theme';
 import { Goal } from "../../types";
 import EmojiPicker from "./EmojiPicker";
@@ -22,6 +22,8 @@ export type GoalModalProps = { goal: Goal }
 export function GoalModal(props: GoalModalProps) {
 
     const dispatch = useAppDispatch();
+
+    const goal = useAppSelector(selectGoalsMap)[props.goal.id];
 
     const [isOpen, setIsOpen] = useState(false)
     const [icon, setIcon] = useState<string | null>(null)
@@ -36,6 +38,10 @@ export function GoalModal(props: GoalModalProps) {
         setTargetAmount(props.goal.targetAmount)
 
     }, [props.goal.id])
+
+    useEffect(() => {
+        setName(goal.name)
+    }, [goal.name])
 
     return (
         <GoalModalContainer onClick={() => setIsOpen(false)}>
@@ -72,7 +78,13 @@ export function GoalModal(props: GoalModalProps) {
                     setIcon(emoji.native)
                     setIsOpen(false)
 
-                    const updatedGoal: Goal = { ...props.goal, iconName: emoji.native }
+                    const updatedGoal: Goal = {
+                        ...props.goal,
+                        iconName: emoji.native ?? props.goal.iconName,
+                        name: name ?? props.goal.name,
+                        targetDate: targetDate ?? props.goal.targetDate,
+                        targetAmount: targetAmount ?? props.goal.targetAmount
+                    }
 
                     dispatch(updateGoalRedux(updatedGoal))
 
@@ -103,7 +115,13 @@ export function GoalModal(props: GoalModalProps) {
                             onChange={(date: MaterialUiPickersDate) => {
                                 if (date != null) {
                                     setTargetDate(date)
-                                    const updatedGoal: Goal = { ...props.goal, targetDate: date }
+                                    const updatedGoal: Goal = {
+                                        ...props.goal,
+                                        iconName: icon ?? props.goal.iconName,
+                                        name: name ?? props.goal.name,
+                                        targetDate: date ?? props.goal.targetDate,
+                                        targetAmount: targetAmount ?? props.goal.targetAmount
+                                    }
                                     dispatch(updateGoalRedux(updatedGoal))
                                     updateGoalApi(props.goal.id, updatedGoal)
                                 }
@@ -122,7 +140,13 @@ export function GoalModal(props: GoalModalProps) {
                     <StringInput value={targetAmount ?? ""} onChange={e => {
                         const nextTargetAmount = parseFloat(e.target.value);
                         setTargetAmount(nextTargetAmount)
-                        const updatedGoal: Goal = { ...props.goal, targetAmount: nextTargetAmount }
+                        const updatedGoal: Goal = {
+                            ...props.goal,
+                            iconName: icon ?? props.goal.iconName,
+                            name: name ?? props.goal.name,
+                            targetDate: targetDate ?? props.goal.targetDate,
+                            targetAmount: nextTargetAmount
+                        }
                         dispatch(updateGoalRedux(updatedGoal))
                         updateGoalApi(props.goal.id, updatedGoal)
                     }} />

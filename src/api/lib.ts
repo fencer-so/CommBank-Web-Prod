@@ -31,3 +31,12 @@ export async function updateGoal(goalId: string, updatedGoal: Goal): Promise<boo
         return false
     }
 }
+
+export async function createGoal(): Promise<Goal | null> {
+    try {
+        const response = await axios.post(`${API_ROOT}/api/Goal/`, {})
+        return response.data
+    } catch (error: any) {
+        return null
+    }
+}
