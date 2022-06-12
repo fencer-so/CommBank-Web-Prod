@@ -81,9 +81,14 @@ export function GoalModal(props: GoalModalProps) {
                 } />
             </EmojiPickerContainer>
 
+            <NameInput value={name ?? ""} onChange={e => {
+                const nextName = e.target.value;
+                setName(nextName)
+                const updatedGoal: Goal = { ...props.goal, name: nextName }
+                dispatch(updateGoalRedux(updatedGoal))
+                updateGoalApi(props.goal.id, updatedGoal)
+            }} />
 
-
-            <Name>{props.goal.name}</Name>
             <Item>
                 <Field name="Target Date" icon={faCalendarAlt} />
                 <Value>
@@ -201,6 +206,16 @@ const Item = styled.div`
 
 const Name = styled.h1`
     font-size: 4rem;
+`
+
+const NameInput = styled.input`
+    display: flex;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    font-size: 4rem;
+    font-weight: bold;
+    color: ${({ theme }: { theme: Theme }) => theme.text};
 `
 
 const IconButton = styled.a`
