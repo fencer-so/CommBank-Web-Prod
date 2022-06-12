@@ -10,6 +10,7 @@ import { media } from '../../utils/media';
 
 const USER_NAME = "Tag Ramotar";
 const USER_EMAIL = "tag@fencer.so";
+export const USER_ID = "62a29c15f4605c4c9fa7f306"
 
 export default function Navbar() {
   const mode = useAppSelector(selectMode);

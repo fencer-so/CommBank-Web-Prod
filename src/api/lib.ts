@@ -1,8 +1,8 @@
 import axios from 'axios';
+import { USER_ID } from '../surfaces/navbar/Navbar';
 import { Goal, Transaction } from '../types';
 
 export const API_ROOT = "https://fencer-commbank.azurewebsites.net"
-
 
 export async function fetchTransactions(): Promise<Transaction[] | null> {
     try {
@@ -34,7 +34,7 @@ export async function updateGoal(goalId: string, updatedGoal: Goal): Promise<boo
 
 export async function createGoal(): Promise<Goal | null> {
     try {
-        const response = await axios.post(`${API_ROOT}/api/Goal/`, {})
+        const response = await axios.post(`${API_ROOT}/api/Goal/`, { "userId": USER_ID, "targetDate": new Date() })
         return response.data
     } catch (error: any) {
         return null
