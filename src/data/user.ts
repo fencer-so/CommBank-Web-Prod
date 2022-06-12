@@ -1,5 +1,5 @@
 /**
- * For MVP user is hardcoded
+ * Hardcoding user for MVP
  * TODO(Implement auth)
  */
 
