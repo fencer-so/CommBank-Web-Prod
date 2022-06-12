@@ -46,8 +46,9 @@ const DrawerContainer = styled.div`
   width: 250px;
   height: 100%;
   background-color: rgb(var(--primary));
+  z-index: 2;
 
-  box-shadow: 3px 3px 3px 0 rgb(0 0 0 / 5%);
+  box-shadow: ${({ theme }) => theme.boxShadow};
   
   ${media('<tablet')} {
     display: none;

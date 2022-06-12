@@ -16,7 +16,7 @@ export default function Navbar() {
   const dispatch = useAppDispatch();
 
   return (
-    <NavbarContainer>
+    <NavbarContainer className='background'>
 
       <NavbarActions>
         <NavbarAction onClick={() => {
@@ -63,8 +63,8 @@ const NavbarAction = styled.a`
 `
 
 const Avatar = styled.img`
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
 `
 

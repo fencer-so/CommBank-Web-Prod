@@ -16,7 +16,7 @@ export const GlobalStyle = createGlobalStyle`
   --navbarBackground: 255,255,255;
   --modalBackground: 251,251,253;
   --errorColor: 207,34,46;
-  --logoColor: #000;
+  --logoColor: 0;
 }
 
 .dark-theme {
@@ -32,7 +32,7 @@ export const GlobalStyle = createGlobalStyle`
   --navbarBackground: 45,55,72;
   --modalBackground: 26,32,44;
   --errorColor: 207,34,46;
-  --logoColor: #fff;
+  --logoColor: 255;
 }
 
 :root {
@@ -117,10 +117,17 @@ body {
 
 .card {
   background-color: ${({ theme }: { theme: Theme }) => theme.cardBackground};
+  box-shadow: ${({ theme }) => theme.boxShadow};
 }
 
 .modal {
   background-color: ${({ theme }: { theme: Theme }) => theme.modalBackground};
+}
+
+
+
+.alert {
+  color: ${({ theme }: { theme: Theme }) => theme.alertColor};
 }
 
 svg {

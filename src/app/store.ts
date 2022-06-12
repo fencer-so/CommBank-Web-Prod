@@ -1,9 +1,11 @@
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 import themeReducer from '../features/themeswitcher/themeSlice';
+import modalReducer from './modalSlice';
 
 export const store = configureStore({
   reducer: {
-    theme: themeReducer
+    theme: themeReducer,
+    modal: modalReducer,
   },
 });
 
