@@ -1,11 +1,11 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { API_ROOT, fetchTransactions } from '../api/lib';
-import Chip from '../components/Chip';
-import { Heading } from '../components/Heading';
-import { Tag, Transaction } from '../types';
-import { media } from '../utils/media';
+import { API_ROOT, fetchTransactions } from '../../api/lib';
+import Chip from '../../components/Chip';
+import { Heading } from '../../components/Heading';
+import { Tag, Transaction } from '../../types';
+import { media } from '../../utils/media';
 
 export default function RecentTransactions() {
   const [transactions, setTransactions] = useState<Transaction[] | null>(null)

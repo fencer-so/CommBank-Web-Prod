@@ -13,9 +13,9 @@ import styled from "styled-components";
 import { updateGoal as updateGoalApi } from "../../api/lib";
 import { selectGoalsMap, updateGoal as updateGoalRedux } from "../../app/goalsSlice";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import EmojiPicker from "../../components/EmojiPicker";
 import { Theme } from '../../components/Theme';
 import { Goal } from "../../types";
-import EmojiPicker from "./EmojiPicker";
 
 export type GoalModalProps = { goal: Goal }
 

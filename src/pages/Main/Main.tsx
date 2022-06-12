@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import Drawer from '../surfaces/drawer/Drawer';
-import Navbar from '../surfaces/navbar/Navbar';
-import { media } from '../utils/media';
-import Accounts from './Accounts';
-import Goals from './Goals';
-import RecentTransactions from './RecentTransactions';
+import Drawer from '../../surfaces/drawer/Drawer';
+import Navbar from '../../surfaces/navbar/Navbar';
+import { media } from '../../utils/media';
+import Accounts from './AccountsSection';
+import GoalsSection from './GoalsSection';
+import RecentTransactions from './TransactionsSection';
 
 export default function Main() {
   return (
@@ -17,7 +17,7 @@ export default function Main() {
         <Content>
           <SubSection>
             <Accounts />
-            <Goals />
+            <GoalsSection />
           </SubSection>
           <RecentTransactions />
         </Content>

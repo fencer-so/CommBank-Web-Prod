@@ -8,7 +8,7 @@ import { GlobalStyle } from './components/GlobalStyles';
 import { DarkTheme, LightTheme } from './components/Theme';
 import { selectMode } from './features/themeswitcher/themeSlice';
 import './font.scss';
-import Main from './pages/Main';
+import Main from './pages/Main/Main';
 import { GoalModal } from './surfaces/modal/GoalModal';
 import { Modal, ModalProps } from './surfaces/modal/Modal';
 import { Goal } from './types';

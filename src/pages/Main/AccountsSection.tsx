@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import CommBankCard from '../assets/images/commbank_card.svg';
-import { Heading } from '../components/Heading';
-import { media } from '../utils/media';
+import CommBankCard from '../../assets/images/commbank_card.svg';
+import { Heading } from '../../components/Heading';
+import { media } from '../../utils/media';
 
-export default function Accounts() {
+export default function AccountsSection() {
   return (
     <MainContainer className='card'>
 
@@ -12,9 +12,7 @@ export default function Accounts() {
         <Heading>Accounts</Heading>
       </TopSection>
 
-
       <CommBankCardImg src={CommBankCard} />
-
     </MainContainer>
   );
 }

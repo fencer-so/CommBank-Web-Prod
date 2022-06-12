@@ -3,15 +3,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { API_ROOT, createGoal as createGoalApi } from '../api/lib';
-import { createGoal as createGoalRedux, selectGoalsList, selectGoalsMap } from '../app/goalsSlice';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { setContent, setIsOpen, setType } from '../app/modalSlice';
-import { Heading } from '../components/Heading';
-import { Goal } from '../types';
-import { media } from '../utils/media';
+import { API_ROOT, createGoal as createGoalApi } from '../../api/lib';
+import { createGoal as createGoalRedux, selectGoalsList } from '../../app/goalsSlice';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { setContent, setIsOpen, setType } from '../../app/modalSlice';
+import { Heading } from '../../components/Heading';
+import { Goal } from '../../types';
+import { media } from '../../utils/media';
+import GoalCard from './GoalCard';
 
-export default function Goals() {
+export default function GoalsSection() {
   const dispatch = useAppDispatch();
 
   const goalIds = useAppSelector(selectGoalsList);
@@ -48,7 +49,6 @@ export default function Goals() {
 
       </TopSection>
 
-
       <GoalsContainer>
         {goalIds ? (
           goalIds.map(goalId => (
@@ -57,61 +57,9 @@ export default function Goals() {
         ) : null}
       </GoalsContainer>
 
-
-
     </MainContainer>
   );
 }
-
-
-type GoalCardProps = { id: string };
-function GoalCard(props: GoalCardProps) {
-  const dispatch = useAppDispatch();
-
-  const goal = useAppSelector(selectGoalsMap)[props.id];
-
-  return (
-    <GoalItem key={goal.id} className='card' onClick={(e) => {
-      e.stopPropagation()
-      dispatch(setContent(goal))
-      dispatch(setType("Goal"))
-      dispatch(setIsOpen(true))
-    }}>
-      <h2>${goal.targetAmount}</h2>
-      <h4>{new Date(goal.targetDate).toLocaleDateString()}</h4>
-      <h1>{goal.iconName}</h1>
-    </GoalItem>
-  )
-}
-
-const GoalItem = styled.div`
-  display: flex;
-  flex-direction: column;
-  min-height: 140px;
-  min-width: 140px;
-  width: 33%;
-
-  cursor: pointer;
-
-  margin-left: 2rem;
-  margin-right: 2rem;
-  border-radius: 2rem;
-
-  align-items: center;
-
-  h2 {
-    font-size: 2rem;
-  }
-
-  h4 {
-    color:  rgba(174, 174, 174, 1);
-    font-size: 1rem;
-  }
-
-  h1 {
-    font-size: 5.5rem;
-  }
-`
 
 const GoalsContainer = styled.div`
   display: flex;
@@ -129,7 +77,6 @@ const GoalsContainer = styled.div`
   }
 
 `
-
 
 const TopSection = styled.div`
   display: flex;
