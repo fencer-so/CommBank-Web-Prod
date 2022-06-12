@@ -16,6 +16,8 @@ const ChipContainer = styled.div<ChipProps>`
     display: flex;
     background-color: ${(props) => tagToColor[props.label]};
     border-radius: 2rem;
+    padding: 1rem;
+    font-weight: bold;
 `
 
 interface TagToColor {

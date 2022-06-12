@@ -4,12 +4,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { BaseEmoji } from "emoji-mart";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { updateGoalIcon } from "../../api/lib";
+import { updateGoal as updateGoalApi } from "../../api/lib";
+import { updateGoal as updateGoalRedux } from "../../app/goalsSlice";
+import { useAppDispatch } from "../../app/hooks";
 import { Goal } from "../../types";
 import EmojiPicker from "./EmojiPicker";
 
 export type GoalModalProps = { goal: Goal }
 export function GoalModal(props: GoalModalProps) {
+
+    const dispatch = useAppDispatch();
 
     const [isOpen, setIsOpen] = useState(false)
     const [icon, setIcon] = useState<string | null>(null)
@@ -48,14 +52,16 @@ export function GoalModal(props: GoalModalProps) {
                 e.stopPropagation()
             }}>
                 <EmojiPicker onClick={(emoji: BaseEmoji, event: MouseEvent) => {
-                    // Set icon locally
                     event.stopPropagation()
+
                     setIcon(emoji.native)
                     setIsOpen(false)
-                    // Update database
 
-                    updateGoalIcon(props.goal.id, emoji.native)
+                    const updatedGoal: Goal = { ...props.goal, iconName: emoji.native }
 
+                    dispatch(updateGoalRedux(updatedGoal))
+
+                    updateGoalApi(props.goal.id, updatedGoal)
                 }
                 } />
             </EmojiPickerContainer>

@@ -91,7 +91,7 @@ function RecentTransactionItem(props: RecentTransactionItemProps) {
 
         {tags ? (
           tags.map(tag => (
-            <Chip label={tag.name} />
+            <Chip key={tag.id} label={tag.name} />
           ))
         ) : (null)}
 
@@ -131,13 +131,21 @@ const TransactionItem = styled.div`
 
   h6.datetime {
     color: rgba(174, 174, 174, 1);
-    font-weight: normal;
+    font-weight: bold;
   }
 `
 
 const TopSection = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+
+  h4.alert {
+    font-size: 1.4rem;
+    font-weight: bold;
+  }
 
   ${media('<tablet')} {
     flex-direction: column;
@@ -149,7 +157,10 @@ const MainContainer = styled.div`
   flex-direction: column;
   width: 400px;
   min-height: 400px;
-  height: 85%;
+  height: 80%;
+  padding: 4rem 2rem;
+
+  overflow-y: hidden;
 
   border-radius: 2rem;
 

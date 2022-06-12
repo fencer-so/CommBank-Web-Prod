@@ -58,7 +58,6 @@ const SubSection = styled.div`
   ${media('<=tablet')}{
       width: 100%;
       justify-content: flex-start;
-      overflow: scroll;
   }
 `
 
@@ -72,8 +71,9 @@ const Content = styled.div`
 
   ${media('<desktop')} {
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     flex-wrap: none;
+    overflow-y: scroll;
   }
 `
 

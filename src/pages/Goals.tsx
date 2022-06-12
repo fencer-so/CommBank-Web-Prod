@@ -1,10 +1,11 @@
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { API_ROOT } from '../api/lib';
-import { useAppDispatch } from '../app/hooks';
+import { createGoal, selectGoalsList, selectGoalsMap } from '../app/goalsSlice';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { setContent, setIsOpen, setType } from '../app/modalSlice';
 import { Heading } from '../components/Heading';
 import { Goal } from '../types';
@@ -13,12 +14,14 @@ import { media } from '../utils/media';
 export default function Goals() {
   const dispatch = useAppDispatch();
 
-  const [goals, setGoals] = useState<Goal[] | null>(null)
+  const goalIds = useAppSelector(selectGoalsList);
 
   useEffect(() => {
     async function fetch() {
       const response = await axios.get(`${API_ROOT}/api/Goal`)
-      setGoals(response.data)
+      response.data.forEach((goal: Goal) => {
+        dispatch(createGoal(goal))
+      })
     }
 
     fetch()
@@ -37,18 +40,9 @@ export default function Goals() {
 
 
       <GoalsContainer>
-        {goals ? (
-          goals.map(goal => (
-            <GoalItem className='card' onClick={(e) => {
-              e.stopPropagation()
-              dispatch(setContent(goal))
-              dispatch(setType("Goal"))
-              dispatch(setIsOpen(true))
-            }}>
-              <h2>${goal.targetAmount}</h2>
-              <h4>{new Date(goal.targetDate).toLocaleDateString()}</h4>
-              <h1>{goal.iconName}</h1>
-            </GoalItem>
+        {goalIds ? (
+          goalIds.map(goalId => (
+            <GoalCard key={goalId} id={goalId} />
           ))
         ) : null}
       </GoalsContainer>
@@ -57,6 +51,27 @@ export default function Goals() {
 
     </MainContainer>
   );
+}
+
+
+type GoalCardProps = { id: string };
+function GoalCard(props: GoalCardProps) {
+  const dispatch = useAppDispatch();
+
+  const goal = useAppSelector(selectGoalsMap)[props.id];
+
+  return (
+    <GoalItem key={goal.id} className='card' onClick={(e) => {
+      e.stopPropagation()
+      dispatch(setContent(goal))
+      dispatch(setType("Goal"))
+      dispatch(setIsOpen(true))
+    }}>
+      <h2>${goal.targetAmount}</h2>
+      <h4>{new Date(goal.targetDate).toLocaleDateString()}</h4>
+      <h1>{goal.iconName}</h1>
+    </GoalItem>
+  )
 }
 
 const GoalItem = styled.div`
@@ -68,8 +83,8 @@ const GoalItem = styled.div`
 
   cursor: pointer;
 
-  margin-left: 1rem;
-  margin-right: 1rem;
+  margin-left: 2rem;
+  margin-right: 2rem;
   border-radius: 2rem;
 
   align-items: center;
@@ -91,7 +106,18 @@ const GoalItem = styled.div`
 const GoalsContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: flex-start;
+  width: 400px;
+  padding: 4rem;
+  overflow-x: auto;
+
+  ${media('<tablet')} {
+    width: 100%;
+
+    padding-left: 0;
+    padding-right: 0;
+  }
+
 `
 
 
@@ -117,10 +143,6 @@ const MainContainer = styled.div`
   
   margin-top: 2rem;
   margin-bottom: 2rem;
-
-  ${media('<desktop')} {
-    height: 450px;
-  }
 
   ${media('<tablet')} {
     width: 100%;
