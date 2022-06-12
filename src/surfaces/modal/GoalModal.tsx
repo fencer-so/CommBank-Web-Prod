@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     KeyboardDatePicker, MuiPickersUtilsProvider
 } from '@material-ui/pickers';
+import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import 'date-fns';
 import { BaseEmoji } from "emoji-mart";
 import React, { useEffect, useState } from 'react';
@@ -12,13 +13,12 @@ import styled from "styled-components";
 import { updateGoal as updateGoalApi } from "../../api/lib";
 import { updateGoal as updateGoalRedux } from "../../app/goalsSlice";
 import { useAppDispatch } from "../../app/hooks";
+import { Theme } from '../../components/Theme';
 import { Goal } from "../../types";
 import EmojiPicker from "./EmojiPicker";
 
-
-
-
 export type GoalModalProps = { goal: Goal }
+
 export function GoalModal(props: GoalModalProps) {
 
     const dispatch = useAppDispatch();
@@ -28,7 +28,6 @@ export function GoalModal(props: GoalModalProps) {
     const [name, setName] = useState<string | null>(null)
     const [targetDate, setTargetDate] = useState<Date | null>(null)
     const [targetAmount, setTargetAmount] = useState<number | null>(null)
-    const [startDate, setStartDate] = useState<Date | null>(new Date("2025-01-01"));
 
     useEffect(() => {
         setIcon(props.goal.iconName)
@@ -95,10 +94,17 @@ export function GoalModal(props: GoalModalProps) {
                             format="MM/dd/yyyy"
                             margin="dense"
                             id="date-picker-inline"
-                            value={startDate}
-                            onChange={setStartDate}
+                            value={targetDate}
+                            onChange={(date: MaterialUiPickersDate) => {
+                                if (date != null) {
+                                    setTargetDate(date)
+                                    const updatedGoal: Goal = { ...props.goal, targetDate: date }
+                                    dispatch(updateGoalRedux(updatedGoal))
+                                    updateGoalApi(props.goal.id, updatedGoal)
+                                }
+                            }}
                             style={{ width: 160 }}
-                            InputProps={{ disableUnderline: true, style: { fontSize: "2rem", fontWeight: "bold" } }}
+                            InputProps={{ disableUnderline: true, style: { fontSize: "1.8rem", fontWeight: "bold" } }}
 
                         />
                     </MuiPickersUtilsProvider>
@@ -108,9 +114,13 @@ export function GoalModal(props: GoalModalProps) {
             <Item>
                 <Field name="Target Amount" icon={faDollarSign} />
                 <Value>
-                    <StringValue>
-                        {props.goal.targetAmount}
-                    </StringValue>
+                    <StringInput value={targetAmount ?? ""} onChange={e => {
+                        const nextTargetAmount = parseFloat(e.target.value);
+                        setTargetAmount(nextTargetAmount)
+                        const updatedGoal: Goal = { ...props.goal, targetAmount: nextTargetAmount }
+                        dispatch(updateGoalRedux(updatedGoal))
+                        updateGoalApi(props.goal.id, updatedGoal)
+                    }} />
                 </Value>
             </Item>
 
@@ -222,4 +232,14 @@ const FieldContainer = styled.div`
 const StringValue = styled.h1`
     font-size: 1.8rem;
     font-weight: bold;
+`
+
+const StringInput = styled.input`
+    display: flex;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: ${({ theme }: { theme: Theme }) => theme.text};
 `
