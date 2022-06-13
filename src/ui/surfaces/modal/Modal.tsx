@@ -19,9 +19,7 @@ export default function Modal() {
 
   if (!isOpen || content === null) return null
 
-  const onClick = (e: React.MouseEvent) => {
-    e.stopPropagation()
-  }
+  const onClick = (event: React.MouseEvent) => event.stopPropagation()
 
   return <Container onClick={onClick}>{renderSwitch()}</Container>
 }

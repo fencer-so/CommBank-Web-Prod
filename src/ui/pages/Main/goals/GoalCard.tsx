@@ -16,8 +16,8 @@ export default function GoalCard(props: Props) {
 
   const goal = useAppSelector(selectGoalsMap)[props.id]
 
-  const onClick = (e: React.MouseEvent) => {
-    e.stopPropagation()
+  const onClick = (event: React.MouseEvent) => {
+    event.stopPropagation()
     dispatch(setContentRedux(goal))
     dispatch(setTypeRedux('Goal'))
     dispatch(setIsOpenRedux(true))

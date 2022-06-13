@@ -29,8 +29,8 @@ export default function App() {
     fetch()
   }, [dispatch])
 
-  const onClick = (e: React.MouseEvent) => {
-    e.stopPropagation()
+  const onClick = (event: React.MouseEvent) => {
+    event.stopPropagation()
     dispatch(setIsOpenRedux(false))
   }
 
