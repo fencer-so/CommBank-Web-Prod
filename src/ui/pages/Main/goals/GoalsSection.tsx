@@ -5,7 +5,11 @@ import styled from 'styled-components'
 import { createGoal as createGoalApi, getGoals } from '../../../../api/lib'
 import { createGoal as createGoalRedux, selectGoalsList } from '../../../../store/goalsSlice'
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks'
-import { setContent, setIsOpen, setType } from '../../../../store/modalSlice'
+import {
+  setContent as setContentRedux,
+  setIsOpen as setIsOpenRedux,
+  setType as setTypeRedux,
+} from '../../../../store/modalSlice'
 import { SectionHeading } from '../../../components/SectionHeading'
 import { media } from '../../../utils/media'
 import GoalsContent from './GoalsContent'
@@ -27,9 +31,9 @@ export default function GoalsSection() {
 
     if (goal != null) {
       dispatch(createGoalRedux(goal))
-      dispatch(setContent(goal))
-      dispatch(setType('Goal'))
-      dispatch(setIsOpen(true))
+      dispatch(setContentRedux(goal))
+      dispatch(setTypeRedux('Goal'))
+      dispatch(setIsOpenRedux(true))
     }
   }
 

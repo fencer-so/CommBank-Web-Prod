@@ -2,49 +2,40 @@ import { createTheme, ThemeProvider as ThemeProviderMui } from '@material-ui/cor
 import React, { useEffect } from 'react'
 import styled, { ThemeProvider } from 'styled-components'
 import { getUser as getUserApi } from './api/lib'
-import { Goal } from './api/types'
 import { useAppDispatch, useAppSelector } from './store/hooks'
-import { selectContent, selectIsOpen, selectType, setIsOpen } from './store/modalSlice'
+import { selectIsOpen, setIsOpen as setIsOpenRedux } from './store/modalSlice'
 import { selectMode } from './store/themeSlice'
-import { setUser } from './store/userSlice'
+import { setUser as setUserRedux } from './store/userSlice'
 import { GlobalStyle } from './ui/components/GlobalStyles'
 import { DarkTheme, LightTheme } from './ui/components/Theme'
 import Main from './ui/pages/Main/Main'
-import { GoalModal } from './ui/surfaces/modal/GoalModal'
-import { Modal, ModalProps } from './ui/surfaces/modal/Modal'
+import Modal from './ui/surfaces/modal/Modal'
 
-function App() {
+export default function App() {
   const mode = useAppSelector(selectMode)
   const modalIsOpen = useAppSelector(selectIsOpen)
-  const modalContent = useAppSelector(selectContent)
-  const modalType = useAppSelector(selectType)
-
   const dispatch = useAppDispatch()
 
-  const muiTheme = createTheme({
-    palette: {
-      type: mode,
-    },
-  })
+  const muiTheme = createTheme({ palette: { type: mode } })
 
   useEffect(() => {
     async function fetch() {
       const user = await getUserApi()
       if (user != null) {
-        dispatch(setUser(user))
+        dispatch(setUserRedux(user))
       }
     }
 
     fetch()
   }, [dispatch])
 
+  const onClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    dispatch(setIsOpenRedux(false))
+  }
+
   return (
-    <AppContainer
-      onClick={(e) => {
-        e.stopPropagation()
-        dispatch(setIsOpen(false))
-      }}
-    >
+    <AppContainer onClick={onClick}>
       <ThemeProviderMui theme={muiTheme}>
         <ThemeProvider theme={mode === 'light' ? LightTheme : DarkTheme}>
           <GlobalStyle />
@@ -52,14 +43,7 @@ function App() {
           <Main />
 
           <ModalContainer isOpen={modalIsOpen}>
-            <Modal
-              isOpen={modalIsOpen}
-              onClick={(e) => {
-                e.stopPropagation()
-              }}
-            >
-              {modalType === 'Goal' ? <GoalModal goal={modalContent as Goal} /> : null}
-            </Modal>
+            <Modal />
           </ModalContainer>
         </ThemeProvider>
       </ThemeProviderMui>
@@ -67,13 +51,10 @@ function App() {
   )
 }
 
-export default App
-
 const AppContainer = styled.div`
   position: relative;
 `
-
-const ModalContainer = styled.div<ModalProps>`
+const ModalContainer = styled.div<ModalContainerProps>`
   width: 100vw;
   height: 100vh;
   display: ${(props) => (props.isOpen ? 'flex' : 'none')};
@@ -85,3 +66,5 @@ const ModalContainer = styled.div<ModalProps>`
   top: 0;
   left: 0;
 `
+
+type ModalContainerProps = { isOpen: boolean }

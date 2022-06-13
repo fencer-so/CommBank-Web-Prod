@@ -2,15 +2,19 @@ import { faMoon, faSun } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 import { useAppDispatch, useAppSelector } from '../../../store/hooks'
-import { selectMode, setDarkMode, setLightMode } from '../../../store/themeSlice'
+import {
+  selectMode,
+  setDarkMode as setDarkModeRedux,
+  setLightMode as setLightModeRedux,
+} from '../../../store/themeSlice'
 
 export default function ThemeSwitcher() {
   const mode = useAppSelector(selectMode)
   const dispatch = useAppDispatch()
 
   const onClick = () => {
-    if (mode === 'light') dispatch(setDarkMode())
-    else dispatch(setLightMode())
+    if (mode === 'light') dispatch(setDarkModeRedux())
+    else dispatch(setLightModeRedux())
   }
 
   return (

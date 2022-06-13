@@ -2,7 +2,11 @@ import React from 'react'
 import styled from 'styled-components'
 import { selectGoalsMap } from '../../../../store/goalsSlice'
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks'
-import { setContent, setIsOpen, setType } from '../../../../store/modalSlice'
+import {
+  setContent as setContentRedux,
+  setIsOpen as setIsOpenRedux,
+  setType as setTypeRedux,
+} from '../../../../store/modalSlice'
 import { Card } from '../../../components/Card'
 
 type Props = { id: string }
@@ -14,9 +18,9 @@ export default function GoalCard(props: Props) {
 
   const onClick = (e: React.MouseEvent) => {
     e.stopPropagation()
-    dispatch(setContent(goal))
-    dispatch(setType('Goal'))
-    dispatch(setIsOpen(true))
+    dispatch(setContentRedux(goal))
+    dispatch(setTypeRedux('Goal'))
+    dispatch(setIsOpenRedux(true))
   }
 
   const asLocaleDateString = (date: Date) => new Date(date).toLocaleDateString()

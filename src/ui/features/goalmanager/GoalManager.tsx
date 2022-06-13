@@ -16,14 +16,14 @@ import EmojiPicker from '../../components/EmojiPicker'
 import { Theme } from '../../components/Theme'
 import { TransparentButton } from '../../components/TransparentButton'
 
-export type GoalModalProps = { goal: Goal }
-
-export function GoalModal(props: GoalModalProps) {
+type Props = { goal: Goal }
+export function GoalManager(props: Props) {
   const dispatch = useAppDispatch()
 
   const goal = useAppSelector(selectGoalsMap)[props.goal.id]
 
-  const [isOpen, setIsOpen] = useState(false)
+  const [emojiPickerIsOpen, setEmojiPickerIsOpen] = useState(false)
+
   const [icon, setIcon] = useState<string | null>(null)
   const [name, setName] = useState<string | null>(null)
   const [targetDate, setTargetDate] = useState<Date | null>(null)
@@ -47,12 +47,12 @@ export function GoalModal(props: GoalModalProps) {
   }, [goal.name])
 
   return (
-    <GoalModalContainer onClick={() => setIsOpen(false)}>
+    <GoalManagerContainer onClick={() => setEmojiPickerIsOpen(false)}>
       <AddIconButtonContainer hasIcon={icon != null}>
         <TransparentButton
           onClick={(e) => {
             e.stopPropagation()
-            setIsOpen(true)
+            setEmojiPickerIsOpen(true)
           }}
         >
           <div>
@@ -66,14 +66,14 @@ export function GoalModal(props: GoalModalProps) {
       <IconButton
         onClick={(e) => {
           e.stopPropagation()
-          setIsOpen(true)
+          setEmojiPickerIsOpen(true)
         }}
       >
         <Icon>{icon}</Icon>
       </IconButton>
 
       <EmojiPickerContainer
-        isOpen={isOpen}
+        isOpen={emojiPickerIsOpen}
         hasIcon={icon != null}
         onClick={(e) => {
           e.stopPropagation()
@@ -84,7 +84,7 @@ export function GoalModal(props: GoalModalProps) {
             event.stopPropagation()
 
             setIcon(emoji.native)
-            setIsOpen(false)
+            setEmojiPickerIsOpen(false)
 
             const updatedGoal: Goal = {
               ...props.goal,
@@ -187,11 +187,11 @@ export function GoalModal(props: GoalModalProps) {
           <StringValue>{new Date(props.goal.created).toLocaleDateString()}</StringValue>
         </Value>
       </Item>
-    </GoalModalContainer>
+    </GoalManagerContainer>
   )
 }
 
-const GoalModalContainer = styled.div`
+const GoalManagerContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
