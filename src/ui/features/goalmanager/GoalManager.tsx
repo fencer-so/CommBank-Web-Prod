@@ -30,13 +30,13 @@ export function GoalManager(props: Props) {
   const [targetAmount, setTargetAmount] = useState<number | null>(null)
 
   useEffect(() => {
-    setIcon(props.goal.iconName)
+    setIcon(props.goal.icon)
     setName(props.goal.name)
     setTargetDate(props.goal.targetDate)
     setTargetAmount(props.goal.targetAmount)
   }, [
     props.goal.id,
-    props.goal.iconName,
+    props.goal.icon,
     props.goal.name,
     props.goal.targetDate,
     props.goal.targetAmount,
@@ -63,7 +63,7 @@ export function GoalManager(props: Props) {
 
     const updatedGoal: Goal = {
       ...props.goal,
-      iconName: emoji.native ?? props.goal.iconName,
+      icon: emoji.native ?? props.goal.icon,
       name: name ?? props.goal.name,
       targetDate: targetDate ?? props.goal.targetDate,
       targetAmount: targetAmount ?? props.goal.targetAmount,
@@ -90,7 +90,7 @@ export function GoalManager(props: Props) {
     setTargetAmount(nextTargetAmount)
     const updatedGoal: Goal = {
       ...props.goal,
-      iconName: icon ?? props.goal.iconName,
+      icon: icon ?? props.goal.icon,
       name: name ?? props.goal.name,
       targetDate: targetDate ?? props.goal.targetDate,
       targetAmount: nextTargetAmount,
@@ -104,7 +104,7 @@ export function GoalManager(props: Props) {
       setTargetDate(date)
       const updatedGoal: Goal = {
         ...props.goal,
-        iconName: icon ?? props.goal.iconName,
+        icon: icon ?? props.goal.icon,
         name: name ?? props.goal.name,
         targetDate: date ?? props.goal.targetDate,
         targetAmount: targetAmount ?? props.goal.targetAmount,
@@ -121,7 +121,7 @@ export function GoalManager(props: Props) {
       </AddIconButtonContainer>
 
       <GoalIconContainer shouldShow={hasIcon()}>
-        <GoalIcon icon={goal.iconName} onClick={addIconOnClick} />
+        <GoalIcon icon={goal.icon} onClick={addIconOnClick} />
       </GoalIconContainer>
 
       <EmojiPickerContainer
